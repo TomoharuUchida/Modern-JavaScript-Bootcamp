@@ -1,5 +1,5 @@
 // Variable Shadowing
-
+// スコープが別なら再度宣言することができる。参照するときは一番近いところから参照される。
 // avoid leaked Global
 
 // let name = "Andrew"
