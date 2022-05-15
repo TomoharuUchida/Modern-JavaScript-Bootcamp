@@ -1,39 +1,37 @@
-const notes = [{
-    title:'My next trip',
-    body:'I would like to go to Spain'
-}, {
-    title: 'Habbits to work on',
-    body:'Exercise. Eating a bit better.'
-},{
-    title: 'Office modification',
-    body:'Get a new seat'
-    }]
+let notes = getSavedNotes()
 
 const filters = {
-    searchText:''
+    searchText: '',
+    sortBy: 'byEdited',
 }
 
-const renderNotes = function (notes, filters) {
-    const filteredNotes = notes.filter(function (note) {
-        return note.title.toLowerCase().includes(filters.searchText.toLowerCase())
-    })
-    // filteredNotesを作った後で初期化する。forEachの後ではない。
-    document.querySelector('#notes').innerHTML = ''
 
-    filteredNotes.forEach(function (note) {
-        const noteEL = document.createElement('p')
-        noteEL.textContent = note.title
-        document.querySelector('#notes').appendChild(noteEL)
-    })
+// const userJSON = JSON.stringify(user)
+// localStorage.setItem('user', userJSON)
 
-}
+// JSONは,オブジェクトっぽいけど、単なる文字列なので、そのままJSでは扱えない。
+// const userJSONData = localStorage.getItem('user')
+// const userData = JSON.parse(userJSONData)
+// console.log(`${user.name} is ${user.age}.`)
 
 renderNotes(notes, filters)
 
+document.querySelector('#create-note').addEventListener('click', function (e) {
+    const id = uuidv4()
+    const timestamp = moment().valueOf()
+    notes.push({
+        id:id,
+        title: '',
+        body: '',
+        createdAt: timestamp,
+        updatedAt: timestamp,
+    })
+    saveNotes(notes)
+    location.assign(`/notes-app/edit.html#${id}`)
+})
+
 // 引数はeventのeとすることが多い。eをconsole.logするとたくさんの内容があることがわかる。
-// document.querySelector('#create-note').addEventListener('click', function (e) {
-//     e.target.textContent = 'button was clicked';
-// })
+
 
 // document.querySelector('#remove-all').addEventListener('click',function () {
 //     // classは複数なのでAll
@@ -50,8 +48,43 @@ document.querySelector('#search-text').addEventListener('input', function (e) {
 })
 
 document.querySelector('#filter-by').addEventListener('change', function (e) {
-    console.log(e.target.value)
+    filters.sortBy = e.target.value
+    renderNotes(notes,filters)
 })
+
+window.addEventListener('storage', function (e) {
+    if (e.key === 'notes') {
+        notes = JSON.parse(e.newValue)
+        renderNotes(notes, filters)
+    }
+})
+
+// const birthday = moment()
+// momentのドキュメントでset,display,formatを確認する
+// birthday.year(1986).month(6).date(11)
+// console.log(birthday.format('MMM D YYYY'))
+
+
+// const now = moment()
+// now.add(1, 'week').subtract(20, 'days')
+// // April 21st,2023
+// いろんなフォーマットを提供している
+// console.log(now.format('MMMM Do,YYYY'))
+
+// // Time from now
+// 2 weeks agoとかの更新履歴の表示に使う
+// console.log(now.fromNow())
+
+// 現在のタイムスタンプを簡単に出力できる
+// const nowTimestamp = now.valueOf()
+// console.log(moment(nowTimestamp).toString())
+
+// 1分に指定する
+// now.minute(1)
+// 分の数字だけ出力する
+// console.log(now.minute())
+
+
 
 /*
 document.querySelector('#name-form').addEventListener('submit', function (e) {
