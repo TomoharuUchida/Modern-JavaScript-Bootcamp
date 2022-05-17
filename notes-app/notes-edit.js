@@ -7,9 +7,7 @@ const dateElement = document.querySelector('#last-edited')
 // 先頭の#を除くためのsubstring
 const noteId = location.hash.substring(1)
 let notes = getSavedNotes()
-let note = notes.find(function (note) {
-    return note.id === noteId
-})
+let note = notes.find((note) => note.id === noteId)
 
 if (note === undefined) {
     location.assign('/notes-app/index.html')
@@ -20,7 +18,7 @@ bodyElement.value = note.body
 dateElement.textContent = generateLastEdited(note.updatedAt)
 
 // btn作ってclickイベントではなく、inputでボタンなしで処理にする
-titleElement.addEventListener('input', function (e) {
+titleElement.addEventListener('input', (e) => {
     // 参照渡しで変わるので、todosのindexを指定して..とか不要
     note.title = e.target.value
     note.updatedAt = moment().valueOf()
@@ -28,26 +26,24 @@ titleElement.addEventListener('input', function (e) {
     saveNotes(notes)
 })
 
-bodyElement.addEventListener('input', function (e) {
+bodyElement.addEventListener('input', (e) => {
     note.body = e.target.value
     note.updatedAt = moment().valueOf()
     dateElement.textContent = generateLastEdited(note.updatedAt)
     saveNotes(notes)
 })
 
-removeElement.addEventListener('click', function () {
+removeElement.addEventListener('click', (e) => {
     removeNote(note.id)
     saveNotes(notes)
     location.assign('/notes-app/index.html')
 })
 
-window.addEventListener('storage', function (e) {
+window.addEventListener('storage', (e) => {
     if (e.key === 'notes') {
     // window要素の中のe.newvalueを使う
     notes = JSON.parse(e.newValue)
-    note = notes.find(function (note) {
-    return note.id === noteId
-    })
+    note = notes.find((note) => note.id === noteId)
 
     if (note === undefined) {
         location.assign('/notes-app/index.html')
@@ -57,6 +53,5 @@ window.addEventListener('storage', function (e) {
     bodyElement.value = note.body
     dateElement.textContent = generateLastEdited(note.updatedAt)
 
-        
     }   
 })
