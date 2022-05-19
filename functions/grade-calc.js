@@ -7,9 +7,16 @@
 // gradeやreturnを1つにまとめることでチェックやメンテナンスをしやすくする
 
 let gradeCalc = function (score, totalScore) {
+    //  先にダメな場合だけを判定して、その後は正しい場合の処理を書くとわかりやすい。ifで処理をかき分けると読みづらくなる。
+    
+    if (typeof score !== 'number' || typeof totalScore !== 'number') {
+        throw Error('Please provide numbers only')
+    }
+
+    // ここから先は、引数の型が正しい場合の処理だけを書けばいい
     let percent = (score / totalScore) * 100
     let letterGrade = ''
-    
+
     if (percent >= 90) {
         letterGrade = 'A'
     } else if (percent >= 80) {
@@ -25,8 +32,15 @@ let gradeCalc = function (score, totalScore) {
     return `You got a ${letterGrade} (${percent}%)!`
 }
 
-let result = gradeCalc(10, 20)
-console.log(result)
+try {
+    let result = gradeCalc(10, true)
+    console.log(result)
+} catch (e) {
+    // throw Error のテキストを返すことができる
+    console.log(e.message)
+}
+
+
 
 /*let gradeCalc = function (studentScore, totalPossibleScore) {
     let scoreRate = studentScore / totalPossibleScore * 100
