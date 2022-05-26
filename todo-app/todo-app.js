@@ -1,3 +1,5 @@
+'use strict'
+
 let todos = getSavedTodos()
 
 // 全部表示の反転キーを、このオブジェクトに持たせる
