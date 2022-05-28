@@ -1,3 +1,31 @@
+// HTTP (Hypertext Transfer Protocol)
+// Request - What do we want to do
+// Response - What was actually done
+
+// Making an HTTP request
+/*
+const request = new XMLHttpRequest()
+// console.log(request)
+let data = []
+request.addEventListener('readystatechange', (e) => {
+    if (e.target.readyState === 4 && e.target.status === 200) {
+        data = JSON.parse(e.target.responseText)
+        console.log(data)
+    } else if (e.target.readyState === 4) {
+        console.log('An error has taken place')
+    }
+})
+
+// request.open('GET', 'https://restcountries.com/v3.1/all')
+// request.send()
+
+const countryCode = 'MX'
+
+// requestはインスタンスを作って実行する
+
+*/
+
+
 // Primitive value: string,number,boolean,null,undefined
 
 // Object: myObject --> Object.prototypr --> null
@@ -25,6 +53,70 @@ window.addEventListener('keypress', (e)=> {
     guessEl.textContent = game1.statusMessage
 })
 
+getPuzzle('2').then((puzzle) => {
+    console.log(puzzle)
+}, (err) => {
+    console.log(`Error: ${err}`)
+})
+
+/*
+getCountry('JP').then((country) => {
+    console.log(country.name)
+}, (err) => {
+   console.log(err) 
+})
+*/
+
+// Fetches readyStateを気にしなくていい
+fetch('http://puzzle.mead.io/puzzle', {}).then(response => {
+    if (response.status === 200) {
+        return response.json()
+    } else {
+        // Errorのインスタンスを作って処理する（と理解）
+        throw new Error('Unable to fetch the puzzle')
+    }
+}).then((data) => {
+    // promise chainingと同じようにreturnを処理している
+    console.log(data.puzzle)
+}).catch(error => {
+    console.log(error)
+})
+
+
+
+getCountry('JP').then((country) => {
+    console.log(country.name)
+}).catch((error) => {
+    console.log(`Error: ${error}`)
+})
+
+getLocation('886be57f7a4c73').then((location) => {
+    return getCountry(location.country)
+}).then((country) => {
+    console.log(`You are currently in ${country.name}`)
+}).catch((error) => {
+    console.log(`Error: ${error}`)
+})
+
+
+
+// 1st error,2nd success data
+// getPuzzle("2",(error, puzzle) => {
+//     if (error) {
+//         console.log(`Error: ${error}`)
+//     } else {
+//         console.log(puzzle)        
+//     }
+// })
+
+// 第二引数に、関数を渡して、getCountryを呼び出している
+// getCountry('FR',(error, country) => {
+//     if (error) {
+//         console.log(`Error: ${error}`)
+//     } else {
+//         console.log(country.name)
+//     }
+// })
 
 // よくあるobjectの宣言だが、裏側では、classとinstanceと同じような検索がされている
 // const product = {
