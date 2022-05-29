@@ -38,27 +38,44 @@ const countryCode = 'MX'
 // htmlの処理はグローバルで定義し、それをクラスの中に持ってくる
 const puzzleEl = document.querySelector('#puzzle')
 const guessEl = document.querySelector('#guesses')
-const game1 = new Hangman('car parts', 3)
-
-// 返り値は文字列なので同じ型
-puzzleEl.textContent = game1.puzzle
-guessEl.textContent = game1.statusMessage
+// const game1 = new Hangman('car parts', 3)
+let game1
 
 window.addEventListener('keypress', (e)=> {
     const guess = String.fromCharCode(e.charCode)
 
     game1.makeGuess(guess)
-    game1.puzzle
-    puzzleEl.textContent = game1.puzzle
-    guessEl.textContent = game1.statusMessage
+    render()
 })
 
+const render = () => {
+    // 返り値は文字列なので同じ型
+    puzzleEl.textContent = game1.puzzle
+    guessEl.textContent = game1.statusMessage
+}
+
+const startGame = async() => {
+    const puzzle = await getPuzzleOld('2')
+    game1 = new Hangman(puzzle.puzzle, 5)
+    render()
+}
+
+document.querySelector('#reset').addEventListener('click', startGame)
+startGame()
+/*
 getPuzzle('2').then((puzzle) => {
     console.log(puzzle)
 }, (err) => {
     console.log(`Error: ${err}`)
 })
-
+*/
+/*
+getCurrentCountry().then((country) => {
+    console.log(country.name)
+}).catch((error) => {
+    console.log(error)
+})
+*/
 /*
 getCountry('JP').then((country) => {
     console.log(country.name)
@@ -68,36 +85,36 @@ getCountry('JP').then((country) => {
 */
 
 // Fetches readyStateを気にしなくていい
-fetch('http://puzzle.mead.io/puzzle', {}).then(response => {
-    if (response.status === 200) {
-        return response.json()
-    } else {
-        // Errorのインスタンスを作って処理する（と理解）
-        throw new Error('Unable to fetch the puzzle')
-    }
-}).then((data) => {
-    // promise chainingと同じようにreturnを処理している
-    console.log(data.puzzle)
-}).catch(error => {
-    console.log(error)
-})
+// fetch('http://puzzle.mead.io/puzzle', {}).then(response => {
+//     if (response.status === 200) {
+//         return response.json()
+//     } else {
+//         // Errorのインスタンスを作って処理する（と理解）
+//         throw new Error('Unable to fetch the puzzle')
+//     }
+// }).then((data) => {
+//     // promise chainingと同じようにreturnを処理している
+//     console.log(data.puzzle)
+// }).catch(error => {
+//     console.log(error)
+// })
 
 
-
+/*
 getCountry('JP').then((country) => {
-    console.log(country.name)
+    return country
+    // console.log(country)
 }).catch((error) => {
     console.log(`Error: ${error}`)
 })
 
 getLocation('886be57f7a4c73').then((location) => {
-    return getCountry(location.country)
-}).then((country) => {
-    console.log(`You are currently in ${country.name}`)
+    // console.log(location.country)
+    return location.country
 }).catch((error) => {
     console.log(`Error: ${error}`)
 })
-
+*/
 
 
 // 1st error,2nd success data
