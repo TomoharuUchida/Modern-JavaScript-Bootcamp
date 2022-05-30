@@ -26,8 +26,30 @@ const removeNote = (id) =>{
 
 // Generate the DOM structure for a note list
 const generateNoteDOM = (note) =>{
-    const noteEL = document.createElement('div')
-    const textEL = document.createElement('a')
+    const noteEl = document.createElement('a')
+    const textEl = document.createElement('p')
+    const statusEl = document.createElement('p')
+
+    // Setup the note title text
+    if (note.title.length > 0) {
+        textEl.textContent = note.title
+    } else {
+        textEl.textContent = 'Unnamed note'
+    }
+    textEl.classList.add('list-item__title')
+    noteEl.appendChild(textEl)
+
+    // Setup the link
+    noteEl.setAttribute('href', `/notes-app/edit.html#${note.id}`)
+    noteEl.classList.add('list-item')
+    
+    // Setup the status message
+    statusEl.textContent = generateLastEdited(note.updatedAt)
+    statusEl.classList.add('list-item__subtitle')
+    noteEl.appendChild(statusEl)
+
+    return noteEl
+/*
     const button = document.createElement('button')
     const updatedAtEL = document.createElement('span')
 
@@ -40,11 +62,11 @@ const generateNoteDOM = (note) =>{
     })
 
     // Setup the remove button
-    button.textContent = 'x'
-    noteEL.appendChild(button)
+    // button.textContent = 'x'
+    // noteEL.appendChild(button)
 
-    updatedAtEL.textContent = moment(note.updatedAt).fromNow()
-    noteEL.appendChild(updatedAtEL)
+    // updatedAtEL.textContent = moment(note.updatedAt).fromNow()
+    // noteEL.appendChild(updatedAtEL)
 
     // Setup the note title text
 
@@ -54,6 +76,7 @@ const generateNoteDOM = (note) =>{
     noteEL.appendChild(textEL)
     
     return noteEL
+*/
 }
 
 const sortNotes = (notes, sortBy) => {
@@ -93,15 +116,27 @@ const sortNotes = (notes, sortBy) => {
 
 // Render application notes
 const renderNotes = (notes, filters) => {
+    // 初めにquerySelectしておく
+    const notesEl = document.querySelector('#notes')
     notes = sortNotes(notes,filters.sortBy)
     const filteredNotes = notes.filter((note)=> note.title.toLowerCase().includes(filters.searchText.toLowerCase()))
     // filteredNotesを作った後で初期化する。forEachの後ではない。
-    document.querySelector('#notes').innerHTML = ''
+    notesEl.innerHTML = ''
 
-    filteredNotes.forEach((note) => {
-        const noteEL = generateNoteDOM(note)
-        document.querySelector('#notes').appendChild(noteEL)
-    })
+    if (filteredNotes.length > 0) {
+        filteredNotes.forEach((note) => {
+            const noteEL = generateNoteDOM(note)
+            notesEl.appendChild(noteEL)
+        })
+    } else {
+        const emptyMessage = document.createElement('p')
+        emptyMessage.textContent = 'No notes to show'
+        // JSで生成した要素に対するCSS付け
+        emptyMessage.classList.add('empty-message')
+        notesEl.appendChild(emptyMessage)
+    }
+
+    
 }
 
 const generateLastEdited = (timestamp) => (`Last edited ${moment(timestamp).fromNow()}`)
