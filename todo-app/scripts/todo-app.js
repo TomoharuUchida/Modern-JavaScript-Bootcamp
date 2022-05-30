@@ -60,15 +60,22 @@ document.querySelector('#search-text').addEventListener('input', (e) => {
 document.querySelector('#new-todo').addEventListener('submit', (e) => {
     e.preventDefault()
     console.log(e.target.elements.text.value)
-    todos.push({
-        id:uuidv4(),
-        text: e.target.elements.text.value,
-        completed:false
-    })
-    saveTodos(todos)
-    renderTodos(todos,filters)
 
-    e.target.elements.text.value = ''
+    const text = e.target.elements.text.value.trim()
+    
+    if (text.length > 0) {
+        todos.push({
+            id:uuidv4(),
+            text: text,
+            completed:false
+        })
+
+        saveTodos(todos)
+        renderTodos(todos,filters)
+
+        e.target.elements.text.value = ''
+    } 
+    
 })
 
 document.querySelector('#hideCompleted').addEventListener('change', (e) => {

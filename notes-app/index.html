@@ -4,34 +4,41 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Notes App</title>
+    <Link href="./styles/styles.css" rel="stylesheet"></Link>
+    <link rel="icon" href="./images/favicon.png">
 </head>
 <body>
-    <h1>Notes App</h1>
-    <h2>Take notes and never forget</h2>
-    <input id="search-text" type="text">
-    <select name="" id="filter-by">
-        <option value="byEdited">Sort by last edit</option>
-        <option value="byCreated">Sort by recently created</option>
-        <option value="alphabetical">Sort alphabetically</option>
-    </select>
-    <!-- 必要なものを表示・削除するためにdivで囲む -->
-    <div id="notes">
-
+    <header class="header">
+        <div class="container">
+            <h1 class="header__title">Notes App</h1>
+            <h2 class="header__subtitle">Take notes and never forget</h2>
+        </div>
+    </header>
+   <div class="actions">
+    <div class="actions__container">
+        <input id="search-text" class="input" type="text" placeholder="Filter notes">
+        <select name="" id="filter-by" class="dropdown">
+            <option value="byEdited">Sort by last edit</option>
+            <option value="byCreated">Sort by recently created</option>
+            <option value="alphabetical">Sort alphabetically</option>
+        </select>
     </div>
-    <button id="create-note">Create Note</button>
-    <label>
-        <input type="checkbox">Click me for fun !
-    </label>
+   </div>
+   <div class="container">
+        <div id="notes"></div>
+        <button id="create-note" class="button">Create Note</button>
+   </div>
+  
 
     <!-- <form id="name-form">
         <input type="text" name="firstName">
         <button type="submit">Submit</button>
     </form> -->
     <!-- <button id="remove-all">Remove All Notes</button> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.1.0/uuidv4.min.js"></script>
+    <script src="./scripts/uuidv4.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment-with-locales.min.js" integrity="sha512-vFABRuf5oGUaztndx4KoAEUVQnOvAIFs59y4tO0DILGWhQiFnFHiR+ZJfxLDyJlXgeut9Z07Svuvm+1Jv89w5g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src ="./notes-functions.js"></script>
-    <script src="./notes-app.js"></script>
+    <script src ="./scripts/notes-functions.js"></script>
+    <script src="./scripts/notes-app.js"></script>
 </body>
 </html>
